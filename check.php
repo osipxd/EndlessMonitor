@@ -1,6 +1,5 @@
 <?php
 require dirname(__FILE__).'/config.php';
-//if (!is_writeable(dirname(__FILE__).'/config.php')) echo 'Error: can not open ', dirname(__FILE__), '/config.php';  
 
 if ($debug) {
     ini_set('display_errors', 1);
