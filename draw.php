@@ -1,4 +1,6 @@
 <?php
+require dirname(__FILE__).'/config.php';
+
 // Закругляем края картинки (если надо)
 function rounding($img) {
     global $radius;
@@ -88,13 +90,20 @@ function align($img,$font_size,$font,$text) {
 	return $position;
 }
 
-$server = isset($_GET['server']) ? $_GET['server'] : 'server'; 
+$server = isset($_GET['server']) ? $_GET['server'] : 'server';
+$file_name = isset($_GET['name']) ? $_GET['server'] : 'noname';  
 $text = isset($_GET['text']) ? $_GET['text'] : '';
 $icon_img = isset($_GET['icon']) ? $_GET['icon'] : '';
+
+if (isset($_GET['debug'])) {
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);    
+}
 
 $path = dirname(__FILE__);
 $style = $style_path.'/'.$style;
 include $path.$style.'/style.php';
+
 $port = $ports[$server];
 $address = $ips[$server];   
                            
@@ -149,4 +158,9 @@ if(is_readable($path)) unlink($path);
  
 imagepng($img,$path);
 imagedestroy($img);
+
+if (isset($_GET['debug']) {
+    ini_set('display_errors', 0);
+    error_reporting(0);    
+}
 ?>
