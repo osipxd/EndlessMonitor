@@ -1,4 +1,11 @@
-<?php
+<?php 
+if (isset($_GET['debug'])) {
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);    
+}
+
+include dirname(__FILE__).'/config.php'; 
+
 // Закругляем края картинки (если надо)
 function rounding($img) {
     global $radius;
@@ -88,13 +95,17 @@ function align($img,$font_size,$font,$text) {
 	return $position;
 }
 
-$server = isset($_GET['server']) ? $_GET['server'] : 'server'; 
-$text = isset($_GET['text']) ? $_GET['text'] : '';
-$icon_img = isset($_GET['icon']) ? $_GET['icon'] : '';
+$server = isset($argv[1]) ? $argv[1] : $_GET['server'];
+$file_name = $server;  
+$text = $texts[$server];
+$icon_img = $icons[$server];
 
 $path = dirname(__FILE__);
+if (isset($_GET['debug'])) echo $path;
 $style = $style_path.'/'.$style;
 include $path.$style.'/style.php';
+include $path.'/serverlist.php'; 
+
 $port = $ports[$server];
 $address = $ips[$server];   
                            
@@ -117,7 +128,7 @@ if(isset($res['report'])) {
 	$bg = imagecreatefrompng($path.$style.'/online.png');
 	$position = imagesx($bg)/2 - $percent;
 	imagecopy($img, $bg, 0, 0, $position, 0, imagesx($img), imagesy($img));
-	if($text != '') {
+	if($text !== false) {
         if ($capital) $text = strtoupper($text);
         $desc = $text." ".$res['online'].'/'.$res['max'];
     }
@@ -125,13 +136,12 @@ if(isset($res['report'])) {
 	$pos = align($img,$font_size,$font,$desc);
 	imagettftext($img, $font_size, 0, $pos['x'], $pos['y'], htmlcolor($img,$font_online_color), $font, $desc);
 	imagedestroy($bg);
-}
-
-if($icon_img != '' && is_readable($path.$icon_path.'/'.$icon_img) && !isset($res['report'])) {
-	$icon = imagecreatefrompng($path.$icon_path.'/'.$icon_img);
-	imagecopy($img, $icon, 2+$ileftright, 2-$iupdown, 0, 0, imagesx($icon), imagesy($icon));
-	imagesavealpha($img, true);
-	imagedestroy($icon);
+    if($icon_img !== false && is_readable($path.$icon_path.'/'.$icon_img)) {
+        $icon = imagecreatefrompng($path.$icon_path.'/'.$icon_img);
+        imagecopy($img, $icon, 2+$ileftright, 2-$iupdown, 0, 0, imagesx($icon), imagesy($icon));
+        imagesavealpha($img, true);
+        imagedestroy($icon);
+    }
 }
 
 if ($border) {
@@ -149,4 +159,9 @@ if(is_readable($path)) unlink($path);
  
 imagepng($img,$path);
 imagedestroy($img);
+
+if (isset($_GET['debug']) {
+    ini_set('display_errors', 0);
+    error_reporting(0);    
+}
 ?>

@@ -1,27 +1,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<meta name="author" content="OsipXD" />
-<meta name="copyright" content="EndlessWorlds" />
-<meta charset="utf-8">
+<head>
+    <meta name="author" content="OsipXD" />
+    <meta name="copyright" content="EndlessWorlds" />
+    <meta charset="utf-8">
+    <style type="text/css">
+        @font-face {               
+            font-family: Style-Font;
+            src: url(<?php echo '..',$style_path,'/',$style,'/font.ttf'; ?>);
+        }
+        p {
+            font-family: Style-Font, serif, cursive;
+            font-size: 14px; /* Тут менять размер шрифта */
+        }
+    </style>
+</head>
 
-<?php require '../config.php';  
+<?php 
+require '../config.php';  
 
 if ($debug) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);    
 }
-?>
-<style>
-    @font-face {               
-        font-family: Style-Font;
-        src: url(<?php echo '..',$style_path,'/',$style,'/font.ttf'; ?>);
-    }
-    p {
-        font-family: Style-Font, serif, cursive;
-        font-size: 14px; /* Тут менять размер шрифта */
-    }
-</style>
-<?php
+
 // Получаем информацию с серверов
 function get_res($address,$port) {    
     $socket = @fsockopen($address,$port);
@@ -42,18 +44,15 @@ function get_res($address,$port) {
 $max = 0;
 $real = 0;
 
-$last_time = file_get_contents('cron.txt');
-$period = time() - 60 * $interval;
-if ($last_time < $period || $debug) {
-    foreach ($servers as $servername) {
-        $ip = $ips[$servername];
-        $port = $ports[$servername];
-        $max += $maxonline[$servername]; 
-        $real += get_res($ip,$port);
-        file_put_contents('last.txt', $real.'/'.$max);
-        file_put_contents('cron.txt', time());
-    }
+foreach ($servers as $servername) {
+    $ip = $ips[$servername];
+    $port = $ports[$servername];
+    $max += $maxonline[$servername]; 
+    $real += get_res($ip,$port);
+    file_put_contents('last.txt', $real.'/'.$max);
+    file_put_contents('cron.txt', time());
 }
+
 $all = file_get_contents('last.txt');
 
 if ($debug) {
@@ -61,5 +60,7 @@ if ($debug) {
     error_reporting(0);    
 }
 ?> 
-<p> Общий онлайн: <?php echo $all; ?> </p>
+<body>
+    <p> Общий онлайн: <?php echo $all; ?> </p>
+</body>
 </html>
