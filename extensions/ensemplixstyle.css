@@ -1,0 +1,20 @@
+.serverimg {               
+    float: left;
+    width: 70px;
+    height: 19px;
+    margin-top: 5px;
+    margin-bottom: 8px;
+    margin-left: 20px;
+}
+       
+.servertext {
+    float: none;
+    width: 50px;
+    height: 12px;
+    font-family: Segoe ui;
+    font-size: 12px;
+    color: #555555;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 100px;
+}
