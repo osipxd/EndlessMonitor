@@ -1,5 +1,10 @@
-<?php
-require dirname(__FILE__).'/config.php';
+<?php 
+if (isset($_GET['debug'])) {
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);    
+}
+
+include dirname(__FILE__).'/config.php'; 
 
 // Закругляем края картинки (если надо)
 function rounding($img) {
@@ -95,14 +100,11 @@ $file_name = $server;
 $text = $texts[$server];
 $icon_img = $icons[$server];
 
-if (isset($_GET['debug'])) {
-    ini_set('display_errors', 1);
-    error_reporting(E_ALL);    
-}
-
 $path = dirname(__FILE__);
+if (isset($_GET['debug'])) echo $path;
 $style = $style_path.'/'.$style;
 include $path.$style.'/style.php';
+include $path.'/serverlist.php'; 
 
 $port = $ports[$server];
 $address = $ips[$server];   
