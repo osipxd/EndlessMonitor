@@ -60,9 +60,7 @@ function get_res($address,$port) {
     global $full; 
     
     $socket = @fsockopen($address,$port);
-    if ($socket == false) {
-        $res['report'] = $off_mess;     
-    } 
+    if ($socket == false) $res['report'] = $off_mess;      
     else {
         @fwrite($socket, "\xFE");
         $cash = "";
@@ -115,7 +113,8 @@ $address = $ips[$server];
 $img = imagecreatetruecolor($width,$height);
 $font = $path.$style.'/font.ttf';
   
-$res = get_res($address,$port);
+if (!isset($freehost)) $res = get_res($address,$port);
+elseif ($freehost) include $path.'/extensions/FreeHost/freehost.php';
 $log = new TIniFileEx('log.ini');
 if (isset($res['report'])) {
     $log->write('online',$server,0);
