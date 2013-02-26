@@ -60,7 +60,9 @@ function get_res($address,$port) {
     global $full; 
     
     $socket = @fsockopen($address,$port);
-    if ($socket == false)  $res['report'] = $off_mess; 
+    if ($socket == false) {
+        $res['report'] = $off_mess;     
+    } 
     else {
         @fwrite($socket, "\xFE");
         $cash = "";
@@ -100,6 +102,7 @@ if (isset($_GET['debug'])) echo $path;
 $style = $style_path.'/'.$style;
 include $path.$style.'/style.php';
 include $path.'/serverlist.php'; 
+include $path.'/inifile.php';
 
 $server = isset($argv[1]) ? $argv[1] : $_GET['server'];
 $file_name = $server;  
@@ -109,10 +112,13 @@ $icon_img = $icons[$server];
 $port = $ports[$server];
 $address = $ips[$server];   
                            
-$img = imagecreatetruecolor($width,$height);  
-$res = get_res($address,$port);
+$img = imagecreatetruecolor($width,$height);
 $font = $path.$style.'/font.ttf';
-if(isset($res['report'])) {
+  
+$res = get_res($address,$port);
+$log = new TIniFileEx('log.ini');
+if (isset($res['report'])) {
+    $log->write('online',$server,0);
     $err_img = '/offline.png';
     if ($res['report'] == $full_mess) {
 	    $err_img = '/full.png';
@@ -124,6 +130,7 @@ if(isset($res['report'])) {
 	imagettftext($img,$font_size,0,$pos['x'], $pos['y'],htmlcolor($img,$font_offline_color),$font,$res['report']);
 	imagedestroy($bg);
 } else {
+    $log->write('online',$server,$res['online']);
     $percent = $width*$res['online']/$res['max'];
 	$bg = imagecreatefrompng($path.$style.'/online.png');
 	$position = imagesx($bg)/2 - $percent;
@@ -143,6 +150,7 @@ if(isset($res['report'])) {
         imagedestroy($icon);
     }
 }
+$log->updateFile();
 
 if ($border) {
     for($i = 0; $i < $height; $i++) {

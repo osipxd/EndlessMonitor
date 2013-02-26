@@ -21,17 +21,17 @@ if (isset($_GET['debug'])) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);    
 }
-require '../../config.php';
-require '../../serverlist.php';  
+include '../../config.php';
+include '../../serverlist.php';
+include '../../inifile.php';  
 
 $max = 0;
 $real = 0;
-
-
+$log = new TIniFileEx('../../log.ini');
 
 foreach ($servers as $servername) {
-    $max += $maxonline[$servername]; 
-    $real += get_res($ip,$port);
+    $max += $maxonline[$servername];
+    $real += $log->read('online',$servername,0);
 }
 
 if (isset($_GET['debug'])) {
