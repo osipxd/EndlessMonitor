@@ -25,9 +25,9 @@
 --------
 1. Формирование ссылки:
 
-   Ссылка должна иметь вид: `http://САЙТ.ru/путь_к_мониторингу/check.php?server=название_сервера&debug=true`                       
+   Ссылка должна иметь вид: `http://САЙТ.ru/путь_к_мониторингу/draw.php?server=название_сервера&debug=true`                       
    Пример ссылки: 
-   `http://site.ru/monitoring_path/check.php?server=server1&debug=true`
+   `http://site.ru/monitoring_path/draw.php?server=server1&debug=true`
 2. Теперь вставляем эту ссылку в аддресную строку. Скрипт запустится в режиме отладки.
    
 Добавление своего сервера
