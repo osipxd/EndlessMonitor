@@ -95,16 +95,16 @@ function align($img,$font_size,$font,$text) {
 	return $position;
 }
 
-$server = isset($argv[1]) ? $argv[1] : $_GET['server'];
-$file_name = $server;  
-$text = $texts[$server];
-$icon_img = $icons[$server];
-
 $path = dirname(__FILE__);
 if (isset($_GET['debug'])) echo $path;
 $style = $style_path.'/'.$style;
 include $path.$style.'/style.php';
 include $path.'/serverlist.php'; 
+
+$server = isset($argv[1]) ? $argv[1] : $_GET['server'];
+$file_name = $server;  
+$text = $texts[$server];
+$icon_img = $icons[$server];
 
 $port = $ports[$server];
 $address = $ips[$server];   
@@ -160,7 +160,7 @@ if(is_readable($path)) unlink($path);
 imagepng($img,$path);
 imagedestroy($img);
 
-if (isset($_GET['debug']) {
+if (isset($_GET['debug'])) {
     ini_set('display_errors', 0);
     error_reporting(0);    
 }
