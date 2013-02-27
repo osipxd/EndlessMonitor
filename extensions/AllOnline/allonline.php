@@ -4,7 +4,7 @@
     <meta name="author" content="OsipXD" />
     <meta name="copyright" content="EndlessWorlds" />
     <meta charset="utf-8">
-    <style type="text/css">
+    <style type="text/css"> 
         @font-face {               
             font-family: Style-Font;
             src: url(<?php echo '..',$style_path,'/',$style,'/font.ttf'; ?>);
@@ -12,7 +12,7 @@
         p {
             font-family: Style-Font, serif, cursive;
             font-size: 14px; /* Тут менять размер шрифта */
-        }
+        } 
     </style>
 </head>
 

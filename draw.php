@@ -112,9 +112,9 @@ $address = $ips[$server];
                            
 $img = imagecreatetruecolor($width,$height);
 $font = $path.$style.'/font.ttf';
-  
-if (!isset($freehost)) $res = get_res($address,$port);
-elseif ($freehost) include $path.'/extensions/FreeHost/freehost.php';
+
+if (isset ($freehost) && $freehost) include $path.'/extensions/FreeHost/freehost.php';
+else $res = get_res($address,$port);
 $log = new TIniFileEx('log.ini');
 if (isset($res['report'])) {
     $log->write('online',$server,0);
