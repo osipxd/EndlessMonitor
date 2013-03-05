@@ -7,7 +7,7 @@
     <style type="text/css"> 
         @font-face {               
             font-family: Style-Font;
-            src: url(<?php echo '..',$style_path,'/',$style,'/font.ttf'; ?>);
+            src: url(<?php echo './..',$style_path,'/',$style,'/font.ttf'; ?>);
         }
         p {
             font-family: Style-Font, serif, cursive;
@@ -21,13 +21,13 @@ if (isset($_GET['debug'])) {
     ini_set('display_errors', 1);
     error_reporting(E_ALL);    
 }
-include '../../config.php';
-include '../../serverlist.php';
-include '../../inifile.php';  
+include_once ('./../../config.php');
+include_once ('./../../serverlist.php');
+include_once ('./../../inifile.php');  
 
 $max = 0;
 $real = 0;
-$log = new TIniFileEx('../../log.ini');
+$log = new TIniFileEx('./../../log.ini');
 
 foreach ($servers as $servername) {
     $max += $maxonline[$servername];
